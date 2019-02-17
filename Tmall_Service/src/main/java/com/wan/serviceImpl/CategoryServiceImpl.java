@@ -6,12 +6,10 @@ import com.wan.pojo.Category;
 import com.wan.pojo.Page4Navigator;
 import com.wan.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author 万星明
@@ -58,4 +56,49 @@ public class CategoryServiceImpl implements ICategoryService {
         //返回分页包装类
         return page4Navigator;
     }
+
+
+    /**
+     * 添加商品分类信息
+     * @param category
+     */
+    @Override
+    public Category addCateGory(Category category) {
+        Category saveCateGory = categoryDao.saveAndFlush(category);
+        return saveCateGory;
+    }
+
+
+    /**
+     * 删除商品分类信息
+     * @param id
+     */
+    @Override
+    public void deleteCateGory(int id) {
+        categoryDao.deleteById(id);
+    }
+
+
+    /**
+     * 通过ID获取商品分类信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Category getCateGory(int id) {
+        Optional<Category> categoryOptional = categoryDao.findById(id);
+        return categoryOptional.get();
+    }
+
+
+    /**
+     * 修改商品分类信息
+     * @param category
+     */
+    @Override
+    public void updateCateGory(Category category) {
+        categoryDao.saveAndFlush(category);
+    }
+
+
 }

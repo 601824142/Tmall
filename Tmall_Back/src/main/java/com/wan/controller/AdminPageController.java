@@ -30,4 +30,14 @@ public class AdminPageController {
     }
 
 
+    /**
+     * 请求跳转到编辑商品分类信息
+     * @return
+     */
+    @GetMapping(value="/admin_category_edit")
+    public String editCategory(){
+        return "admin/editCategory";
+    }
+
+
 }

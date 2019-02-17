@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="include/admin/adminHeader::html('分类管理')" >
-
-</head>
+<head th:include="include/admin/adminHeader::html('分类管理')" ></head>
 <body>
 <div th:replace="include/admin/adminNavigator::html" ></div>
 <script>
     $(function(){
+
+        // 声明数据
         var data4Vue = {
             uri:'categories',
             pagination:{},
-            beans: []
+            bean: { id: 0, name: ''},
+            beans: [],
+            file: null
         };
 
         //ViewModel
@@ -25,21 +27,60 @@
                 list:function(start){
                     var url =  this.uri+ "?start="+start;
                     axios.get(url).then(function(response) {
-                        vue.beans = response.data.content;
                         vue.pagination = response.data;
-                        alert(pagination);
-                        alert(beans);
+                        vue.beans = response.data.content;
                     });
                 },
-                jump:function (page) {
-                    jump(page,vue); //定义在adminHeader.html中
+                // 添加商品分类方法
+                add: function () {
+                    if(!checkEmpty(this.bean.name, "分类名称"))
+                        return;
+                    if(!checkEmpty(this.file, "分类图片"))
+                        return;
+                    var url = this.uri;
+                    //axios.js 上传文件要用 formData 这种方式
+                    var formData = new FormData();
+                    formData.append("image", this.file);
+                    formData.append("name", this.bean.name);
+                    axios.post(url,formData).then(function(response){
+                        vue.list(0);
+                        vue.bean = { id: 0, name: '', hp: '0'};
+                        $("#categoryPic").val('');
+                        vue.file = null;
+                    });
                 },
-                jumpByNumber:function (start) {
-                    jumpByNumber(start,vue);
-                }
+                // 删除商品分类信息
+                deleteBean: function (id) {
+                    if(!checkDeleteLink())
+                        return;
+                    var url = this.uri+"/"+id;
+                    axios.delete(url).then(function(response){
+                        if(0!=response.data.length){
+                            alert(response.data);
+                        }
+                        else{
+                            vue.list(0);
+                        }
+                    });
+                },
 
+
+
+                // 跳转上一页/下一页
+                jump: function(page){
+                    jump(page,vue); //定义在adminHeader.html 中
+                },
+                // 页码跳转
+                jumpByNumber: function(start){
+                    jumpByNumber(start,vue);
+                },
+                getFile: function (event) {
+                    this.file = event.target.files[0];
+                },
             }
         });
+
+
     });
 
 </script>
@@ -85,7 +126,33 @@
             </tbody>
         </table>
     </div>
-    <div th:replace="include/admin/adminPage::html"></div>
+    <div th:replace="include/admin/adminPage::html" ></div>
+
+    <!--添加商品分类div-->
+    <div class="panel panel-warning addDiv">
+        <div class="panel-heading">新增分类</div>
+        <div class="panel-body">
+            <table class="addTable">
+                <tr>
+                    <td>分类名称</td>
+                    <td><input  @keyup.enter="add" v-model.trim="bean.name" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>分类图片</td>
+                    <td>
+                        <input id="categoryPic" accept="image/*" type="file" name="image" @change="getFile($event)" />
+                    </td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <a href="#nowhere"  @click="add" class="btn btn-success">提交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
 
 </div>
 <div th:replace="include/admin/adminFooter::html" ></div>

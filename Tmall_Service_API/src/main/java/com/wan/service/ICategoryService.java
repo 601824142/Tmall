@@ -17,4 +17,17 @@ public interface ICategoryService {
     //查询全部商品分类,进行分页
     Page4Navigator<Category> queryAllCateGory(int start, int size, int navigatePages);
 
+    //添加商品分类信息
+    Category addCateGory(Category category);
+
+    //删除商品分类信息
+    void deleteCateGory(int id);
+
+    //通过ID查询商品分类信息
+    Category getCateGory(int id);
+
+    //修改商品分类信息
+    void updateCateGory(Category category);
+
+
 }
