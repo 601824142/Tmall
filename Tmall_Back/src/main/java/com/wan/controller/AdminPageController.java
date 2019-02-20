@@ -21,7 +21,7 @@ public class AdminPageController {
 
 
     /**
-     * 访问地址admin_category_list 就会访问 admin/listCategory.html
+     * 商品分类查询：访问地址admin_category_list 就会访问 admin/listCategory.html
      * @return
      */
     @GetMapping(value = "/admin_category_list")
@@ -31,7 +31,7 @@ public class AdminPageController {
 
 
     /**
-     * 请求跳转到编辑商品分类信息
+     * 商品分类编辑：请求跳转到编辑商品分类信息
      * @return
      */
     @GetMapping(value="/admin_category_edit")
@@ -39,5 +39,82 @@ public class AdminPageController {
         return "admin/editCategory";
     }
 
+
+    /**
+     * 分类属性查询：
+     * @return
+     */
+    @GetMapping(value="/admin_property_list")
+    public String listProperty(){
+        return "admin/listProperty";
+    }
+
+    /**
+     * 分类属性编辑：
+     * @return
+     */
+    @GetMapping(value="/admin_property_edit")
+    public String editProperty(){
+        return "admin/editProperty";
+
+    }
+
+
+    /**
+     * 具体产品查询：
+     * @return
+     */
+    @GetMapping(value="/admin_product_list")
+    public String listProduct(){
+        return "admin/listProduct";
+    }
+
+    /**
+     * 具体产品编辑：
+     * @return
+     */
+    @GetMapping(value="/admin_product_edit")
+    public String editProduct(){
+        return "admin/editProduct";
+    }
+
+    /**
+     * 产品图片查询：
+     * @return
+     */
+    @GetMapping(value="/admin_productImage_list")
+    public String listProductImage(){
+        return "admin/listProductImage";
+    }
+
+    /**
+     * 产品属性值编辑：
+     * @return
+     */
+    @GetMapping(value="/admin_propertyValue_edit")
+    public String editPropertyValue(){
+        return "admin/editPropertyValue";
+    }
+
+
+    /**
+     * 用户查询：
+     * @return
+     */
+    @GetMapping(value="/admin_user_list")
+    public String listUser(){
+        return "admin/listUser";
+    }
+
+
+    /**
+     * 订单查询：
+     * @return
+     */
+    @GetMapping(value="/admin_order_list")
+    public String listOrder(){
+        return "admin/listOrder";
+
+    }
 
 }

@@ -49,7 +49,7 @@ public class CategoryController {
         //如果初始页小于0,则将初始页设置为0,否则设置为传进来的初始页
         start = start<0?0:start;
 
-        //调用服务分页查询商品分类信息,默认显示页码数量为3
+        //调用服务分页查询商品分类信息,默认显示页码数量为5
         Page4Navigator<Category> page = categoryService.queryAllCateGory(start, size, 5);
 
         System.out.println("控制—查询分类信息分页"+page);
@@ -114,6 +114,12 @@ public class CategoryController {
     }
 
 
+    /**
+     * 通过ID获取商品分类
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/categories/{id}")
     public Category get(@PathVariable("id") int id) throws Exception {
         Category bean=categoryService.getCateGory(id);
@@ -121,6 +127,14 @@ public class CategoryController {
     }
 
 
+    /**
+     * 修改相对应的商品分类信息
+     * @param bean
+     * @param image
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @PutMapping("/categories/{id}")
     public Object update(Category bean, MultipartFile image,HttpServletRequest request) throws Exception {
         //从请求中获取修改的分类名称
