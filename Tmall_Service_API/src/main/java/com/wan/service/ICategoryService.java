@@ -29,5 +29,10 @@ public interface ICategoryService {
     //修改商品分类信息
     void updateCateGory(Category category);
 
+    //1、从产品中删除所属分类,解耦和
+    void removeCategoryFromProduct(List<Category> categories);
+
+    //2、从产品中删除所属分类,解耦和
+    void removeCategoryFromProduct(Category category);
 
 }

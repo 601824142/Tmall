@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.wan.dao.CategoryDao;
 import com.wan.pojo.Category;
 import com.wan.pojo.Page4Navigator;
+import com.wan.pojo.Product;
 import com.wan.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -98,6 +99,47 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public void updateCateGory(Category category) {
         categoryDao.saveAndFlush(category);
+    }
+
+
+    /**
+     * 解耦和,解除商品分类和具体商品的关系
+     * @param categories
+     */
+    @Override
+    public void removeCategoryFromProduct(List<Category> categories) {
+        for (Category category : categories) {
+            removeCategoryFromProduct(category);
+        }
+    }
+
+    /**
+     * 解耦和,解除商品分类和具体商品的关系
+     * @param category
+     */
+    @Override
+    public void removeCategoryFromProduct(Category category) {
+        //通过商品分类获取该分类下的全部商品信息
+        List<Product> products = category.getProducts();
+        //如果商品集合不为空,则遍历
+        if (null!=products){
+            //则遍历商品集合,将商品对象中的商品分类属性至为空
+            for (Product product : products) {
+                product.setCategory(null);
+            }
+        }
+
+        //将商品分类下的推荐商品列表至为空,解耦
+        List<List<Product>> productsByRow = category.getProductsByRow();
+        //判断推荐商品是否为空
+        if (null!=productsByRow){
+            for (List<Product> productList : productsByRow) {
+                for (Product pd : productList) {
+                    pd.setCategory(null);
+                }
+            }
+        }
+
     }
 
 

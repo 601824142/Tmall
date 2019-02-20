@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author 万星明
@@ -22,5 +23,15 @@ public class Category implements Serializable {
     int id;
 
     String name;
+
+    @Transient
+    List<Product> products;
+    @Transient
+    List<List<Product>> productsByRow;
+
+    @Override
+    public String toString() {
+        return "Category [id=" + id + ", name=" + name + "]";
+    }
 
 }
